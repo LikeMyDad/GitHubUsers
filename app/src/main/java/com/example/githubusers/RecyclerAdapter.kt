@@ -1,15 +1,16 @@
 package com.example.githubusers
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.items_leaner_layout.view.*
 
 
-class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter(private val context: Context, private val list: MutableList<User>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
-    private val values = mutableListOf<DummyContent.DummyItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -17,22 +18,16 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = values.size
+    override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = values[position]
+        val item = list[position]
         holder.viewId.text = item.id
-        holder.viewContent.text = item.content
+        holder.viewContent.text = item.login
     }
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        val viewId: TextView = view.findViewById(R.id.item_number)
-        val viewContent: TextView = view.findViewById(R.id.content)
-    }
-
-    fun setItems(list: List<DummyContent.DummyItem>) {
-        values.clear()
-        values.addAll(list)
-        notifyDataSetChanged()
+        val viewId: TextView = itemView.item_number
+        val viewContent: TextView = itemView.content
     }
 }
