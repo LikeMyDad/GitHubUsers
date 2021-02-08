@@ -3,6 +3,7 @@ package com.example.githubusers
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -13,6 +14,8 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
+    private val listUsers = DummyContent.ITEMS
+    private val listAdapter = RecyclerAdapter()
     private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,10 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
-
-
-
-
+        recyclerView.adapter = listAdapter
         /*
         * Ниже код для ретрофит
          */
@@ -36,12 +36,11 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
                 if(response.isSuccessful) {
                     progress_bar.visibility = View.VISIBLE
-                    recyclerView.apply {  }
+
                 }
             }
-
             override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                TODO("Not yet implemented")
+                Toast.makeText(this@MainActivity, "${t.message}", Toast.LENGTH_SHORT)
             }
         })
     }
