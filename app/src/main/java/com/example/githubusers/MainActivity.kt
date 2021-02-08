@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,23 +30,26 @@ class MainActivity : AppCompatActivity() {
         service = NetworkService().createService(GithubApi::class.java)
 
         getListUsers()
-
     }
 
     private fun getListUsers() {
         val call: Call<MutableList<User>> = service.usersList()
         progress_bar.visibility = View.VISIBLE
 
+
         call.enqueue(object: Callback<MutableList<User>> {
 
             override fun onResponse(call: Call<MutableList<User>>, response: Response<MutableList<User>>) {
                 if(response.isSuccessful) {
-                    listAdapter = RecyclerAdapter(baseContext, response.body() as MutableList<User>)
+                    listAdapter = RecyclerAdapter(response.body()!!)
+                    recyclerView.adapter = listAdapter
                 }
+                progress_bar.visibility = View.GONE
             }
 
             override fun onFailure(call: Call<MutableList<User>>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "${t.message}", Toast.LENGTH_SHORT)
+                progress_bar.visibility = View.GONE
             }
         })
 
