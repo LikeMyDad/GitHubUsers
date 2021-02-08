@@ -3,6 +3,7 @@ package com.example.githubusers
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
@@ -12,10 +13,21 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var linearLayoutManager: LinearLayoutManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        linearLayoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = linearLayoutManager
+
+
+
+
+        /*
+        * Ниже код для ретрофит
+         */
 
         val service = NetworkService().createService(GithubApi::class.java)
         val call: Call<List<User>> = service.usersList()
