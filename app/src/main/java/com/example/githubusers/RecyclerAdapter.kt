@@ -17,9 +17,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return values.size
-    }
+    override fun getItemCount(): Int = values.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
@@ -30,5 +28,11 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val viewId: TextView = view.findViewById(R.id.item_number)
         val viewContent: TextView = view.findViewById(R.id.content)
+    }
+
+    fun setItems(list: List<DummyContent.DummyItem>) {
+        values.clear()
+        values.addAll(list)
+        notifyDataSetChanged()
     }
 }
