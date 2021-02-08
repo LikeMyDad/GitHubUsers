@@ -2,6 +2,7 @@ package com.example.githubusers
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,9 +15,9 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-    private val listUsers = DummyContent.ITEMS
-    private val listAdapter = RecyclerAdapter()
+    private lateinit var listAdapter: RecyclerAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var service: GithubApi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,24 +25,31 @@ class MainActivity : AppCompatActivity() {
 
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
-        recyclerView.adapter = listAdapter
-        /*
-        * Ниже код для ретрофит
-         */
 
-        val service = NetworkService().createService(GithubApi::class.java)
-        val call: Call<List<User>> = service.usersList()
+        service = NetworkService().createService(GithubApi::class.java)
 
-        call.enqueue(object: Callback<List<User>> {
-            override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
+        getListUsers()
+
+    }
+
+    private fun getListUsers() {
+        val call: Call<MutableList<User>> = service.usersList()
+        progress_bar.visibility = View.VISIBLE
+
+        call.enqueue(object: Callback<MutableList<User>> {
+
+            override fun onResponse(call: Call<MutableList<User>>, response: Response<MutableList<User>>) {
                 if(response.isSuccessful) {
-                    progress_bar.visibility = View.VISIBLE
-
+                    listAdapter = RecyclerAdapter(baseContext, response.body() as MutableList<User>)
                 }
             }
-            override fun onFailure(call: Call<List<User>>, t: Throwable) {
+
+            override fun onFailure(call: Call<MutableList<User>>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "${t.message}", Toast.LENGTH_SHORT)
             }
         })
+
     }
+
+
 }

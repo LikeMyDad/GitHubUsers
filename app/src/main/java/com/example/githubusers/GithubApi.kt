@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface GithubApi {
     @GET("/users")
-    fun usersList(): Call<List<User>>
+    fun usersList(): Call<MutableList<User>>
 }
