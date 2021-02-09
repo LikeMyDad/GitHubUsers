@@ -11,6 +11,6 @@ interface GithubApi {
             Call<MutableList<User>>
 
     @GET("/users/{user}/repos")
-    fun reposList(@Path("login") login: Int):
+    fun reposList(@Path("login") login: String):
             Call<MutableList<Repos>>
 }

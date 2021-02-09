@@ -6,5 +6,5 @@ import com.google.gson.annotations.SerializedName
 class Repos {
     @SerializedName("name")
     @Expose
-    private val nameRepos: String? = null
+    val nameRepos: String? = null
 }

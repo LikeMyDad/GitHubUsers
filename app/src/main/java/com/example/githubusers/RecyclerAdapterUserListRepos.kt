@@ -1,6 +1,5 @@
 package com.example.githubusers
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,11 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.items_leaner_layout.view.*
 
+class RecyclerAdapterUserListRepos(private val list: MutableList<Repos>): RecyclerView.Adapter<RecyclerAdapterUserListRepos.ViewHolder>(){
 
-class RecyclerAdapter(private val list: MutableList<User>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
-
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerAdapterUserListRepos.ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.items_leaner_layout, parent, false)
         return ViewHolder(view)
@@ -20,14 +17,12 @@ class RecyclerAdapter(private val list: MutableList<User>) : RecyclerView.Adapte
 
     override fun getItemCount(): Int = list.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerAdapterUserListRepos.ViewHolder, position: Int) {
         val item = list[position]
-        holder.viewId.text = item.id
-        holder.viewContent.text = item.login
+        holder.viewContent.text = item.nameRepos
     }
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        val viewId: TextView = itemView.item_number
         val viewContent: TextView = itemView.content
     }
 }
