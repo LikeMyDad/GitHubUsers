@@ -34,7 +34,10 @@ class UserListRepos : AppCompatActivity() {
     }
 
     private fun getUserRepos() {
-        val call: Call<MutableList<Repos>> = service.reposList(content.toString())
+
+
+
+        val call: Call<MutableList<Repos>> = service.reposList(intent.getStringExtra("login")!!)
 
         progress_bar.visibility = View.VISIBLE
 
