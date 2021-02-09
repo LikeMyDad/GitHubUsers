@@ -1,11 +1,13 @@
 package com.example.githubusers
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.items_leaner_layout.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,6 +22,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
 
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
@@ -39,12 +43,19 @@ class MainActivity : AppCompatActivity() {
         progress_bar.visibility = View.VISIBLE // Полоска прогресса, убирается при загрузке контента
 
         // Вызывается асинхронный колл для списка юзеров
-        call.enqueue(object: Callback<MutableList<User>> {
+        call.enqueue(object : Callback<MutableList<User>> {
 
-            override fun onResponse(call: Call<MutableList<User>>, response: Response<MutableList<User>>) {
-                if(response.isSuccessful) {
-                    listAdapterListUsers = RecyclerAdapterListUsers(response.body()!!) // адаптеру передается респонс в виде объектов в список
-                    recyclerView.adapter = listAdapterListUsers // пробрасываем адаптер в ресайкл вью
+            override fun onResponse(
+                call: Call<MutableList<User>>,
+                response: Response<MutableList<User>>
+            ) {
+                if (response.isSuccessful) {
+                    listAdapterListUsers = RecyclerAdapterListUsers(
+                        response.body()!!,
+                        ::onItemClick
+                    ) // адаптеру передается респонс в виде объектов в список
+                    recyclerView.adapter =
+                        listAdapterListUsers // пробрасываем адаптер в ресайкл вью
                     progress_bar.visibility = View.GONE
                 }
             }
@@ -55,6 +66,13 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+    }
+
+    private fun onItemClick(userLogin: String) {
+        val intent = Intent(this, UserListRepos::class.java)
+//        listAdapterListUsers.notifyItemChanged(position)
+        intent.putExtra("login", userLogin)
+        startActivity(intent)
     }
 
 
