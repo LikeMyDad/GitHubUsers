@@ -12,6 +12,7 @@ class NetworkService {
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
+
     fun <T>createService(service: Class<T>): T {
         return retrofit.create(service)
     }
