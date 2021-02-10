@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.items_leaner_layout.view.*
 
 class RecyclerAdapterUserListRepos(private val list: MutableList<Repos>): RecyclerView.Adapter<RecyclerAdapterUserListRepos.ViewHolder>(){
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerAdapterUserListRepos.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.items_leaner_layout, parent, false)
         return ViewHolder(view)
@@ -17,12 +17,14 @@ class RecyclerAdapterUserListRepos(private val list: MutableList<Repos>): Recycl
 
     override fun getItemCount(): Int = list.size
 
-    override fun onBindViewHolder(holder: RecyclerAdapterUserListRepos.ViewHolder, position: Int) {
-        val item = list[position]
-        holder.viewContent.text = item.nameRepos
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(list[position])
     }
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        val viewContent: TextView = itemView.content
+        fun bind(repos: Repos) = with(itemView) {
+            item_number.text = repos.idRepos
+            content.text = repos.nameRepos
+        }
     }
 }
