@@ -2,24 +2,18 @@ package com.example.githubusers.Activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.githubusers.Adapters.RecyclerAdapterUserListRepos
-import com.example.githubusers.NetworkService
+import com.example.githubusers.Adapters.RecyclerAdapterListUsers
+import com.example.githubusers.Presenter.UserReposListPresenter
+import com.example.githubusers.Presenter.UsersListPresenter
 import com.example.githubusers.R
-import com.example.githubusers.Post_Get_Requests.GithubApi
-import com.example.githubusers.Post_Get_Requests.Repos
+import com.example.githubusers.UserContract
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class UserListRepos : AppCompatActivity() {
+class UserListRepos : AppCompatActivity(), UserContract.ReposView {
 
-    private lateinit var listAdapterUserListRepos: RecyclerAdapterUserListRepos
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var service: GithubApi
+    private lateinit var userReposListPresenter: UserReposListPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,16 +22,15 @@ class UserListRepos : AppCompatActivity() {
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
 
-        /*
-        * Создание сервиса ретрофит
-        * Задаем в параметре класс с get запросом к серверу
-         */
-        service = NetworkService().createService(GithubApi::class.java)
-
-        getUserRepos()
+        userReposListPresenter = UserReposListPresenter(this)
     }
 
-    private fun getUserRepos() {
+    override fun initView() {
+        recyclerView.adapter = userReposListPresenter.loadUserReposList()
+    }
+
+
+/*    private fun getUserRepos() {
 
 
 
@@ -64,5 +57,5 @@ class UserListRepos : AppCompatActivity() {
 
         })
 
-    }
+    } */
 }

@@ -1,31 +1,20 @@
 package com.example.githubusers.Activities
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.githubusers.Adapters.RecyclerAdapterListUsers
-import com.example.githubusers.NetworkService
-import com.example.githubusers.Presenter.Presenter
+import com.example.githubusers.Presenter.UsersListPresenter
 import com.example.githubusers.R
-import com.example.githubusers.Post_Get_Requests.GithubApi
-import com.example.githubusers.Post_Get_Requests.User
 import com.example.githubusers.UserContract
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class MainActivity : AppCompatActivity(), UserContract.ActivityView {
 
-    private lateinit var presenter: Presenter
-
-    private lateinit var listAdapterListUsers: RecyclerAdapterListUsers
+    private lateinit var usersListPresenter: UsersListPresenter
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var service: GithubApi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +22,14 @@ class MainActivity : AppCompatActivity(), UserContract.ActivityView {
 
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
-        service = NetworkService().createService(GithubApi::class.java)
 
-        getListUsers()
+        usersListPresenter = UsersListPresenter(this)
+    }
+    override fun initView() {
+        recyclerView.adapter = usersListPresenter.loadUsersList()
     }
 
-    private fun getListUsers() {
+ /*   private fun getListUsers() {
         val call: Call<MutableList<User>> = service.usersList()
 
         progress_bar.visibility = View.VISIBLE
@@ -66,21 +57,12 @@ class MainActivity : AppCompatActivity(), UserContract.ActivityView {
             }
         })
 
-    }
+    } */
 
-    private fun onItemClick(userLogin: String) {
+/*    private fun onItemClick(userLogin: String) {
         val intent = Intent(this, UserListRepos::class.java)
         intent.putExtra("login", userLogin)
         startActivity(intent)
-    }
-
-    override fun showUsersList() {
-        TODO("Not yet implemented")
-    }
-
-    override fun showUserReposList() {
-        TODO("Not yet implemented")
-    }
-
+    } */
 
 }
