@@ -7,4 +7,7 @@ class Repos {
     @SerializedName("name")
     @Expose
     val nameRepos: String? = null
+    @SerializedName("id")
+    @Expose
+    val idRepos: String? = null
 }
