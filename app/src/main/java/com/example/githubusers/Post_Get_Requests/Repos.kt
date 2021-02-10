@@ -1,4 +1,4 @@
-package com.example.githubusers
+package com.example.githubusers.Post_Get_Requests
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

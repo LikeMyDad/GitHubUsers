@@ -1,4 +1,4 @@
-package com.example.githubusers
+package com.example.githubusers.Post_Get_Requests
 
 import retrofit2.Call
 import retrofit2.http.GET

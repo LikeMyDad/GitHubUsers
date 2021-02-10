@@ -1,12 +1,16 @@
-package com.example.githubusers
+package com.example.githubusers.Activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubusers.Adapters.RecyclerAdapterUserListRepos
+import com.example.githubusers.NetworkService
+import com.example.githubusers.R
+import com.example.githubusers.Post_Get_Requests.GithubApi
+import com.example.githubusers.Post_Get_Requests.Repos
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.items_leaner_layout.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,9 +46,12 @@ class UserListRepos : AppCompatActivity() {
         progress_bar.visibility = View.VISIBLE
 
         call.enqueue(object: Callback<MutableList<Repos>>{
-            override fun onResponse(call: Call<MutableList<Repos>>,response: Response<MutableList<Repos>>) {
+            override fun onResponse(call: Call<MutableList<Repos>>, response: Response<MutableList<Repos>>) {
                 if(response.isSuccessful) {
-                    listAdapterUserListRepos = RecyclerAdapterUserListRepos(response.body()!!)
+                    listAdapterUserListRepos =
+                        RecyclerAdapterUserListRepos(
+                            response.body()!!
+                        )
                     recyclerView.adapter = listAdapterUserListRepos
                     progress_bar.visibility = View.GONE
                 }

@@ -1,4 +1,4 @@
-package com.example.githubusers
+package com.example.githubusers.Activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,14 +6,22 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubusers.Adapters.RecyclerAdapterListUsers
+import com.example.githubusers.NetworkService
+import com.example.githubusers.Presenter.Presenter
+import com.example.githubusers.R
+import com.example.githubusers.Post_Get_Requests.GithubApi
+import com.example.githubusers.Post_Get_Requests.User
+import com.example.githubusers.UserContract
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.items_leaner_layout.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), UserContract.ActivityView {
+
+    private lateinit var presenter: Presenter
 
     private lateinit var listAdapterListUsers: RecyclerAdapterListUsers
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -23,15 +31,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
-
-        /*
-        * Создание сервиса ретрофит
-        * Задаем в параметре класс с get запросом к серверу
-         */
         service = NetworkService().createService(GithubApi::class.java)
 
         getListUsers()
@@ -40,9 +41,8 @@ class MainActivity : AppCompatActivity() {
     private fun getListUsers() {
         val call: Call<MutableList<User>> = service.usersList()
 
-        progress_bar.visibility = View.VISIBLE // Полоска прогресса, убирается при загрузке контента
+        progress_bar.visibility = View.VISIBLE
 
-        // Вызывается асинхронный колл для списка юзеров
         call.enqueue(object : Callback<MutableList<User>> {
 
             override fun onResponse(
@@ -50,12 +50,12 @@ class MainActivity : AppCompatActivity() {
                 response: Response<MutableList<User>>
             ) {
                 if (response.isSuccessful) {
-                    listAdapterListUsers = RecyclerAdapterListUsers(
-                        response.body()!!,
-                        ::onItemClick
-                    ) // адаптеру передается респонс в виде объектов в список
-                    recyclerView.adapter =
-                        listAdapterListUsers // пробрасываем адаптер в ресайкл вью
+                    listAdapterListUsers =
+                        RecyclerAdapterListUsers(
+                            response.body()!!,
+                            ::onItemClick
+                        )
+                    recyclerView.adapter = listAdapterListUsers
                     progress_bar.visibility = View.GONE
                 }
             }
@@ -70,9 +70,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun onItemClick(userLogin: String) {
         val intent = Intent(this, UserListRepos::class.java)
-//        listAdapterListUsers.notifyItemChanged(position)
         intent.putExtra("login", userLogin)
         startActivity(intent)
+    }
+
+    override fun showUsersList() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showUserReposList() {
+        TODO("Not yet implemented")
     }
 
 
