@@ -1,61 +1,41 @@
 package com.example.githubusers.screens.repos
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubusers.model.Model
 import com.example.githubusers.R
-import com.example.githubusers.UserContract
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.githubusers.base.BaseActivity
+import com.example.githubusers.network.Repos
+import kotlinx.android.synthetic.main.activity_main.recyclerView
 
-class UserListRepos : AppCompatActivity(), UserContract.ReposView {
+class UserListRepos : BaseActivity(R.layout.activity_user_list_repos), UserListReposView {
 
-    private lateinit var userReposListPresenter: UserReposListPresenter
     private lateinit var linearLayoutManager: LinearLayoutManager
+
+
+    private val model = Model()
+    private val presenter = intent.getStringExtra("login")?.let {
+        UserListReposPresenter(model, it)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_list_repos)
 
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
 
-        userReposListPresenter =
-            UserReposListPresenter(
-                UserListRepos()
-            )
+
+        presenter!!.onAttach(this)
+        presenter.loadRepos()
     }
 
-    override fun initView() {
-        recyclerView.adapter = userReposListPresenter.loadUserReposList()
+    override fun onLoadUserListRepos(repos: List<Repos>) {
+        recyclerView.adapter = RecyclerAdapterUserListRepos(repos)
     }
 
-
-/*    private fun getUserRepos() {
-
-
-
-        val call: Call<MutableList<Repos>> = service.reposList(intent.getStringExtra("login")!!)
-
-        progress_bar.visibility = BaseView.VISIBLE
-
-        call.enqueue(object: Callback<MutableList<Repos>>{
-            override fun onResponse(call: Call<MutableList<Repos>>, response: Response<MutableList<Repos>>) {
-                if(response.isSuccessful) {
-                    listAdapterUserListRepos =
-                        RecyclerAdapterUserListRepos(
-                            response.body()!!
-                        )
-                    recyclerView.adapter = listAdapterUserListRepos
-                    progress_bar.visibility = BaseView.GONE
-                }
-            }
-
-            override fun onFailure(call: Call<MutableList<Repos>>, t: Throwable) {
-                Toast.makeText(this@UserListRepos, "${t.message}", Toast.LENGTH_SHORT)
-                progress_bar.visibility = BaseView.GONE
-            }
-
-        })
-
-    } */
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter!!.onDetach()
+    }
 }

@@ -1,9 +1,11 @@
 package com.example.githubusers.base
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 open class BaseActivity(@LayoutRes private val layout: Int) : AppCompatActivity(), BaseView{
 
@@ -17,6 +19,9 @@ open class BaseActivity(@LayoutRes private val layout: Int) : AppCompatActivity(
     }
 
     override fun showLoading(isLoading: Boolean) {
-         //todo
+         when(isLoading) {
+            true -> progress_bar.visibility = View.VISIBLE
+            false -> progress_bar.visibility = View.GONE
+        }
     }
 }

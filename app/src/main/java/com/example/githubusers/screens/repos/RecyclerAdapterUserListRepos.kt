@@ -8,7 +8,7 @@ import com.example.githubusers.R
 import com.example.githubusers.network.Repos
 import kotlinx.android.synthetic.main.items_leaner_layout.view.*
 
-class RecyclerAdapterUserListRepos(private val list: MutableList<Repos>): RecyclerView.Adapter<RecyclerAdapterUserListRepos.ViewHolder>(){
+class RecyclerAdapterUserListRepos(private val list: List<Repos>): RecyclerView.Adapter<RecyclerAdapterUserListRepos.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

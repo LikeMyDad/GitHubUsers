@@ -1,19 +1,19 @@
-package com.example.githubusers.Model
+package com.example.githubusers.model
 
 import com.example.githubusers.network.GithubApi
 import com.example.githubusers.network.NetworkService
 import com.example.githubusers.network.Repos
 import com.example.githubusers.network.User
-import com.example.githubusers.UserContract
+import com.example.githubusers.base.BaseModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class Model : UserContract.UserModel {
+class Model : BaseModel {
     private val service = NetworkService()
         .createService(GithubApi::class.java)
 
-    override fun loadlUserList(
+    override fun loadUserList(
         onSuccess: (List<User>) -> Unit,
         onError: (Throwable) -> Unit
     ) {
@@ -38,7 +38,7 @@ class Model : UserContract.UserModel {
         })
     }
 
-    override fun callBackUserReposList(
+    override fun loadUserListRepos(
         login: String,
         onSuccess: (List<Repos>) -> Unit,
         onError: (Throwable) -> Unit
