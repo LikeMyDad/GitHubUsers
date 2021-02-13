@@ -1,19 +1,16 @@
-package com.example.githubusers.Activities
+package com.example.githubusers.screens.repos
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.githubusers.Adapters.RecyclerAdapterListUsers
-import com.example.githubusers.Presenter.UserReposListPresenter
-import com.example.githubusers.Presenter.UsersListPresenter
 import com.example.githubusers.R
 import com.example.githubusers.UserContract
 import kotlinx.android.synthetic.main.activity_main.*
 
 class UserListRepos : AppCompatActivity(), UserContract.ReposView {
 
-    private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var userReposListPresenter: UserReposListPresenter
+    private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +19,10 @@ class UserListRepos : AppCompatActivity(), UserContract.ReposView {
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
 
-        userReposListPresenter = UserReposListPresenter(this)
+        userReposListPresenter =
+            UserReposListPresenter(
+                UserListRepos()
+            )
     }
 
     override fun initView() {
@@ -36,7 +36,7 @@ class UserListRepos : AppCompatActivity(), UserContract.ReposView {
 
         val call: Call<MutableList<Repos>> = service.reposList(intent.getStringExtra("login")!!)
 
-        progress_bar.visibility = View.VISIBLE
+        progress_bar.visibility = BaseView.VISIBLE
 
         call.enqueue(object: Callback<MutableList<Repos>>{
             override fun onResponse(call: Call<MutableList<Repos>>, response: Response<MutableList<Repos>>) {
@@ -46,13 +46,13 @@ class UserListRepos : AppCompatActivity(), UserContract.ReposView {
                             response.body()!!
                         )
                     recyclerView.adapter = listAdapterUserListRepos
-                    progress_bar.visibility = View.GONE
+                    progress_bar.visibility = BaseView.GONE
                 }
             }
 
             override fun onFailure(call: Call<MutableList<Repos>>, t: Throwable) {
                 Toast.makeText(this@UserListRepos, "${t.message}", Toast.LENGTH_SHORT)
-                progress_bar.visibility = View.GONE
+                progress_bar.visibility = BaseView.GONE
             }
 
         })

@@ -1,15 +1,15 @@
 package com.example.githubusers
 
-import androidx.recyclerview.widget.RecyclerView
-import com.example.githubusers.Adapters.RecyclerAdapterListUsers
-import com.example.githubusers.Adapters.RecyclerAdapterUserListRepos
-import com.example.githubusers.Post_Get_Requests.Repos
-import com.example.githubusers.Post_Get_Requests.User
+import com.example.githubusers.screens.main.RecyclerAdapterListUsers
+import com.example.githubusers.screens.repos.RecyclerAdapterUserListRepos
+import com.example.githubusers.network.Repos
+import com.example.githubusers.network.User
 
 interface UserContract {
 
     interface ActivityView {
         fun initView()
+        fun onItemClick(login: String)
     }
 
     interface ReposView {
@@ -26,7 +26,7 @@ interface UserContract {
     }
 
     interface UserModel {
-        fun callBackUserList(): MutableList<User>
-        fun callBackUserReposList(login: String): MutableList<Repos>
+        fun loadlUserList(onSuccess: (List<User>) -> Unit, onError: (Throwable) -> Unit)
+        fun callBackUserReposList(login: String, onSuccess: (List<Repos>) -> Unit, onError: (Throwable) -> Unit)
     }
 }
