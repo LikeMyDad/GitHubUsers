@@ -6,6 +6,7 @@ import retrofit2.http.Path
 
 
 interface GithubApi {
+
     @GET("/users")
     fun usersList():
             Call<List<User>>
@@ -13,4 +14,5 @@ interface GithubApi {
     @GET("/users/{user}/repos")
     fun reposList(@Path("user") login: String):
             Call<List<Repos>>
+
 }

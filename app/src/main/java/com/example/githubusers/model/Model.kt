@@ -10,6 +10,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class Model : BaseModel {
+
     private val service = NetworkService()
         .createService(GithubApi::class.java)
 
@@ -62,4 +63,5 @@ class Model : BaseModel {
             }
         })
     }
+
 }

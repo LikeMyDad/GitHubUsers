@@ -6,4 +6,5 @@ import com.example.githubusers.network.User
 interface MainView: BaseView {
 
     fun onUsersLoaded(users: List<User>)
+
 }

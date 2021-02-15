@@ -4,6 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class NetworkService {
+
     private val BASE_URL = "https://api.github.com/"
 
     private val retrofit = Retrofit.Builder()
@@ -14,4 +15,5 @@ class NetworkService {
     fun <T>createService(service: Class<T>): T {
         return retrofit.create(service)
     }
+
 }
