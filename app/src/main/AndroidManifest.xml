@@ -11,8 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GitHubUsers">
-        <activity android:name=".UserListRepos"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".screens.repos.UserListRepos"></activity>
+        <activity android:name=".screens.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
