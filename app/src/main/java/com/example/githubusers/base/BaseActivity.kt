@@ -24,4 +24,5 @@ open class BaseActivity(@LayoutRes private val layout: Int) : AppCompatActivity(
             false -> progress_bar.visibility = View.GONE
         }
     }
+
 }

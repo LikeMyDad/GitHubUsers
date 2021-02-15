@@ -29,7 +29,7 @@ class RecyclerAdapterListUsers(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(user: User) = with(itemView) {
             setOnClickListener {
-                user.id?.let { onItemClick(it) }
+                user.login?.let { onItemClick(it) }
             }
             item_number.text = user.id
             content.text = user.login

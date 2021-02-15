@@ -14,9 +14,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity(R.layout.activity_main), MainView {
 
     private lateinit var linearLayoutManager: LinearLayoutManager
-
+    private lateinit var presenter: UsersListPresenter
     private val model = Model()
-    private val presenter = UsersListPresenter(model)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +23,7 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainView {
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
 
-
-
+        presenter = UsersListPresenter(model)
         presenter.onAttach(this)
         presenter.loadUsers()
     }

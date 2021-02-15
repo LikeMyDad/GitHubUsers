@@ -12,12 +12,9 @@ import kotlinx.android.synthetic.main.activity_main.recyclerView
 class UserListRepos : BaseActivity(R.layout.activity_user_list_repos), UserListReposView {
 
     private lateinit var linearLayoutManager: LinearLayoutManager
-
-
+    private lateinit var presenter: UserListReposPresenter
     private val model = Model()
-    private val presenter = intent.getStringExtra("login")?.let {
-        UserListReposPresenter(model, it)
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,8 +22,8 @@ class UserListRepos : BaseActivity(R.layout.activity_user_list_repos), UserListR
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
 
-
-        presenter!!.onAttach(this)
+        presenter = UserListReposPresenter(model, intent.getStringExtra("login")!!)
+        presenter.onAttach(this)
         presenter.loadRepos()
     }
 
