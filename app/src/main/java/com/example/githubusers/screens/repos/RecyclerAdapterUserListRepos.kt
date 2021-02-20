@@ -25,7 +25,7 @@ class RecyclerAdapterUserListRepos(private val list: List<Repos>):
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         fun bind(repos: Repos) = with(itemView) {
-            item_number.text = repos.idRepos
+            item_number.text = (list.indexOf(repos) + 1).toString()
             content.text = repos.nameRepos
         }
     }

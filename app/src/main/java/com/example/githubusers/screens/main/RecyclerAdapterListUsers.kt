@@ -31,7 +31,7 @@ class RecyclerAdapterListUsers(
             setOnClickListener {
                 user.login?.let { onItemClick(it) }
             }
-            item_number.text = user.id
+            item_number.text = (list.indexOf(user) + 1).toString()
             content.text = user.login
         }
     }
