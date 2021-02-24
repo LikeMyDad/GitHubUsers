@@ -7,16 +7,16 @@ import com.example.githubusers.base.BaseActivity
 import com.example.githubusers.data.UserRepository
 import com.example.githubusers.data.UserRepositoryImpl
 import com.example.githubusers.network.GithubApi
-import com.example.githubusers.network.NetworkService
+import com.example.githubusers.network.NetworkServiceProvider
 import com.example.githubusers.network.Repos
 import kotlinx.android.synthetic.main.activity_main.recyclerView
 
-class UserListRepos : BaseActivity(R.layout.activity_user_list_repos), UserListReposView {
+class UserListReposActivity : BaseActivity(R.layout.activity_user_list_repos), UserListReposView {
 
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var presenter: UserListReposPresenter
     private val repository: UserRepository = UserRepositoryImpl(
-        NetworkService()
+        NetworkServiceProvider()
             .createService(GithubApi::class.java)
     )
 
