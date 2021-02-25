@@ -5,10 +5,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubusers.App
 import com.example.githubusers.R
 import com.example.githubusers.base.BaseActivity
-import com.example.githubusers.data.UserRepository
-import com.example.githubusers.data.UserRepositoryImpl
-import com.example.githubusers.network.GithubApi
-import com.example.githubusers.network.NetworkServiceProvider
 import com.example.githubusers.network.Repos
 import com.example.githubusers.screens.repos.di.DaggerReposComponent
 import com.example.githubusers.screens.repos.di.ReposModule

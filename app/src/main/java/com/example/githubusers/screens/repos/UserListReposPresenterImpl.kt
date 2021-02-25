@@ -3,7 +3,6 @@ package com.example.githubusers.screens.repos
 import com.example.githubusers.base.BasePresenter
 import com.example.githubusers.data.UserRepository
 import com.example.githubusers.network.Repos
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 

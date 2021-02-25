@@ -19,4 +19,5 @@ class MainModule{
     @Provides
     @ActivityScope
     fun provideUserRepository(api: GithubApi): UserRepository = UserRepositoryImpl(api)
+
 }
