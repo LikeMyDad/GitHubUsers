@@ -7,10 +7,9 @@ import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class UserListReposPresenter(private val repoRepository: UserRepository, private var login: String): BasePresenter<UserListReposView>() {
+class UserListReposPresenterImpl(private val repoRepository: UserRepository): BasePresenter<UserListReposView>() {
 
-
-    fun loadRepos() {
+    fun loadRepos(login: String) {
         view?.showLoading(true)
         compositeDisposable.add(repoRepository.loadUserListRepos(login)
             .subscribeOn(Schedulers.io())

@@ -6,7 +6,7 @@ import com.example.githubusers.network.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class UsersListPresenter(private val userRepository: UserRepository) : BasePresenter<MainView>() {
+class UsersListPresenterImpl(private val userRepository: UserRepository) : BasePresenter<MainView>() {
 
     fun loadUsers() {
         view?.showLoading(true)

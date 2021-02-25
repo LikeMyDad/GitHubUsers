@@ -2,34 +2,42 @@ package com.example.githubusers.screens.repos
 
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubusers.App
 import com.example.githubusers.R
 import com.example.githubusers.base.BaseActivity
 import com.example.githubusers.data.UserRepository
 import com.example.githubusers.data.UserRepositoryImpl
 import com.example.githubusers.network.GithubApi
-import com.example.githubusers.network.NetworkService
+import com.example.githubusers.network.NetworkServiceProvider
 import com.example.githubusers.network.Repos
+import com.example.githubusers.screens.repos.di.DaggerReposComponent
+import com.example.githubusers.screens.repos.di.ReposModule
 import kotlinx.android.synthetic.main.activity_main.recyclerView
+import javax.inject.Inject
 
-class UserListRepos : BaseActivity(R.layout.activity_user_list_repos), UserListReposView {
+class UserListReposActivity : BaseActivity(R.layout.activity_user_list_repos), UserListReposView {
 
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var presenter: UserListReposPresenter
-    private val repository: UserRepository = UserRepositoryImpl(
-        NetworkService()
-            .createService(GithubApi::class.java)
-    )
 
+    private val component by lazy {
+        DaggerReposComponent.builder()
+            .appComponent((application as App).appComponent)
+            .reposModule(ReposModule())
+            .build()
+    }
+
+    @Inject
+    lateinit var presenter: UserListReposPresenterImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
-
-        presenter = UserListReposPresenter(repository, intent.getStringExtra("login")!!)
+        component.inject(this)
         presenter.onAttach(this)
-        presenter.loadRepos()
+        presenter.loadRepos(
+            intent.getStringExtra("login").toString()
+        )
     }
 
     override fun onLoadUserListRepos(repos: List<Repos>) {
