@@ -18,4 +18,5 @@ interface AppComponent {
     fun provideGitHubApi(): GithubApi
 
     fun provideApplicationContext(): Context
+
 }

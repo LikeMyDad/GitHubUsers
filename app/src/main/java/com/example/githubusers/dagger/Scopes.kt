@@ -6,6 +6,6 @@ import javax.inject.Scope
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
 annotation class ActivityScope
 
-@Scope
+/*@Scope
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
-annotation class FragmentScope
+annotation class FragmentScope */

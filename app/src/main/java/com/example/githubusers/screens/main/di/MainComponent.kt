@@ -11,4 +11,6 @@ import dagger.Component
 interface MainComponent {
 
     fun inject(activity: MainActivity)
+
+
 }

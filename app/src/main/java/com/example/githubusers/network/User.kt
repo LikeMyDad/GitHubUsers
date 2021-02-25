@@ -8,8 +8,5 @@ class User {
     @SerializedName("login")
     @Expose
     val login: String? = null
-//    @SerializedName("id")
-//    @Expose
-//    val id: String? = null
 
 }
