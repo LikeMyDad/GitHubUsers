@@ -37,7 +37,7 @@ class UserListReposActivity : BaseActivity(R.layout.activity_user_list_repos), U
     }
 
     override fun onLoadUserListRepos(repos: List<Repos>) {
-        recyclerView.adapter = RecyclerAdapterUserListRepos(repos)
+        recyclerView.adapter = UserListReposRecyclerAdapter(repos)
     }
 
     override fun onDestroy() {

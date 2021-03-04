@@ -22,4 +22,9 @@ class AppModule(private val applicationContext: Context) {
     @Provides
     @Singleton
     fun provideApplicationContext()  = applicationContext
+
+//    @Provides
+//    @Singleton
+//    fun provideWorkers() = Workers(AndroidSchedulers.mainThread(), Schedulers.io())
+
 }

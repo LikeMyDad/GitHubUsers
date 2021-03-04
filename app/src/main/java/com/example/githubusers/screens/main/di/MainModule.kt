@@ -10,14 +10,17 @@ import dagger.Provides
 
 
 @Module
-class MainModule{
+class MainModule(){
 
     @Provides
     @ActivityScope
-    fun provideUsersListPresenter(userRepository: UserRepository)= UsersListPresenterImpl(userRepository)
+    fun provideUsersListPresenter(repository: UserRepository)= UsersListPresenterImpl(repository)
+
+//    @Provides
+//    @ActivityScope
+//    fun provideMainInteract(workers: Workers, userRepository: UserRepository) = MainInteractor(workers, userRepository)
 
     @Provides
     @ActivityScope
     fun provideUserRepository(api: GithubApi): UserRepository = UserRepositoryImpl(api)
-
 }

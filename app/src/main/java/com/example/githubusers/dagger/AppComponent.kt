@@ -16,4 +16,5 @@ interface AppComponent {
 
     fun provideApplicationContext(): Context
 
+//    fun provideWorkers(): Workers
 }

@@ -3,6 +3,7 @@ package com.example.githubusers.screens.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.githubusers.App
 import com.example.githubusers.R
 import com.example.githubusers.base.BaseActivity
@@ -13,10 +14,13 @@ import com.example.githubusers.screens.repos.UserListReposActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-
 class MainActivity : BaseActivity(R.layout.activity_main), MainView {
 
     private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var adapter: MainRecyclerAdapter
+    private var loading: Boolean = false
+
+    private val listUsers = mutableListOf<User>()
 
     private val component by lazy {
         DaggerMainComponent.builder()
@@ -24,6 +28,8 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainView {
             .mainModule(MainModule())
             .build()
     }
+
+    private var since = 1
 
     @Inject
     lateinit var presenter: UsersListPresenterImpl
@@ -35,15 +41,32 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainView {
         component.inject(this)
         presenter.onAttach(this)
         presenter.loadUsers()
+
+        adapter = MainRecyclerAdapter(listUsers, loading, ::onItemClick)
+        recyclerView.adapter = adapter
+
+        recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                loading = true
+                if (!recyclerView.canScrollVertically(1) &&
+                    newState == RecyclerView.SCROLL_STATE_IDLE
+                ) {
+                    loading = false
+                    presenter.onNextPage(since + 30)
+                }
+            }
+        })
     }
 
     override fun onUsersLoaded(users: List<User>) {
-        recyclerView.adapter = RecyclerAdapterListUsers(users, ::onItemClick)
+        listUsers.addAll(users)
+        adapter.notifyDataSetChanged()
     }
 
     private fun onItemClick(login: String) {
         intent = Intent(this, UserListReposActivity::class.java)
-        intent.putExtra("login", login)
+            .apply { putExtra("login", login) }
         startActivity(intent)
     }
 
