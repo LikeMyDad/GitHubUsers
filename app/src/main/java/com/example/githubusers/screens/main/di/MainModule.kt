@@ -10,11 +10,11 @@ import dagger.Provides
 
 
 @Module
-class MainModule{
+class MainModule(){
 
     @Provides
     @ActivityScope
-    fun provideUsersListPresenter(userRepository: UserRepository)= UsersListPresenterImpl(userRepository)
+    fun provideUsersListPresenter(repository: UserRepository)= UsersListPresenterImpl(repository)
 
     @Provides
     @ActivityScope

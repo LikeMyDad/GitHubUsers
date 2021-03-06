@@ -8,6 +8,8 @@ interface UserRepository {
 
     fun loadUsersList(): Single<List<User>>
 
+    fun sinceLoadUsersList(since: Int): Single<List<User>>
+
     fun loadUserListRepos(login: String): Single<List<Repos>>
 
 }

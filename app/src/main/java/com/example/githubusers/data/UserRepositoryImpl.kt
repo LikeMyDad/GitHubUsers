@@ -7,8 +7,14 @@ import io.reactivex.Single
 
 class UserRepositoryImpl(private val service: GithubApi) : UserRepository {
 
+    private val FIRST_ID = 1
+
     override fun loadUsersList(): Single<List<User>> {
-        return service.usersList()
+        return service.usersList(FIRST_ID)
+    }
+
+    override fun sinceLoadUsersList(since: Int): Single<List<User>> {
+        return service.usersList(since)
     }
 
     override fun loadUserListRepos(login: String): Single<List<Repos>> {

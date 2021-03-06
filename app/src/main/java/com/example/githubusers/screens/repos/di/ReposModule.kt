@@ -7,7 +7,6 @@ import com.example.githubusers.network.GithubApi
 import com.example.githubusers.screens.repos.UserListReposPresenterImpl
 import dagger.Module
 import dagger.Provides
-import javax.inject.Named
 
 @Module
 class ReposModule() {
@@ -20,7 +19,4 @@ class ReposModule() {
     @ActivityScope
     fun provideUserRepository(api: GithubApi): UserRepository = UserRepositoryImpl(api)
 
-/*    @Provides
-    @ActivityScope
-    fun provideLogin() = login */
 }
