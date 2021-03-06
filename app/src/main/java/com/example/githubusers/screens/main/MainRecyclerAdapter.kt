@@ -12,7 +12,6 @@ import java.lang.Exception
 
 class MainRecyclerAdapter(
     private val list: List<User>,
-    private val loading: Boolean,
     private val onItemClick: (String) -> Unit
 ) : RecyclerView.Adapter<BaseViewHolder>() {
 
@@ -20,6 +19,8 @@ class MainRecyclerAdapter(
         const val TYPE_CONTENT = 0
         const val TYPE_LOADING = 1
     }
+
+    var hasLoading = true
 
     override fun getItemViewType(position: Int): Int {
         return if(isLoadingPosition(position)) TYPE_LOADING else TYPE_CONTENT
@@ -37,23 +38,14 @@ class MainRecyclerAdapter(
     override fun getItemCount(): Int = if(list.isEmpty()) 0 else getSize()
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        holder.bind(list[position])
-        holder.itemView.setOnClickListener { onItemClick(list[position].login!!) }
+        if (!isLoadingPosition(position)) {
+            holder.bind(list[position])
+            holder.itemView.setOnClickListener { onItemClick(list[position].login!!) }
+        }
     }
 
-    private fun getSize() = if(loading) list.size + 1 else list.size
+    private fun getSize() = if(hasLoading) list.size + 1 else list.size
 
     private fun isLoadingPosition(position: Int) = position == list.size
-
-
-
-/*    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(user: User) = with(itemView) {
-            setOnClickListener {
-                user.login?.let { onItemClick(it) }
-            }
-            content.text = user.login
-        }
-    } */
 
 }

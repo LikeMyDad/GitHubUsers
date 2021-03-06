@@ -6,6 +6,6 @@ import com.example.githubusers.network.User
 
 abstract class BaseViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
-    open fun bind(item: User) {}
+    open fun bind(user: User) {}
 
 }

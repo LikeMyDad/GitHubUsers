@@ -18,9 +18,13 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainView {
 
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: MainRecyclerAdapter
-    private var loading: Boolean = false
 
     private val listUsers = mutableListOf<User>()
+    private var since = 1
+
+    private companion object {
+        private const val SCROLL_DIRECTION = 1
+    }
 
     private val component by lazy {
         DaggerMainComponent.builder()
@@ -29,30 +33,31 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainView {
             .build()
     }
 
-    private var since = 1
-
     @Inject
     lateinit var presenter: UsersListPresenterImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
+
         component.inject(this)
         presenter.onAttach(this)
         presenter.loadUsers()
 
-        adapter = MainRecyclerAdapter(listUsers, loading, ::onItemClick)
+        adapter = MainRecyclerAdapter(listUsers, ::onItemClick)
+        adapter.hasLoading = presenter.hasLoading
         recyclerView.adapter = adapter
 
         recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                loading = true
-                if (!recyclerView.canScrollVertically(1) &&
-                    newState == RecyclerView.SCROLL_STATE_IDLE
+
+                if (!recyclerView.canScrollVertically(SCROLL_DIRECTION) &&
+                    newState == RecyclerView.SCROLL_STATE_IDLE && adapter.hasLoading
                 ) {
-                    loading = false
+
                     presenter.onNextPage(since + 30)
                 }
             }
