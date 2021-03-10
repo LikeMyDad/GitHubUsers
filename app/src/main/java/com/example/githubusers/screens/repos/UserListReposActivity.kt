@@ -27,9 +27,11 @@ class UserListReposActivity : BaseActivity(R.layout.activity_user_list_repos), U
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
         component.inject(this)
+
         presenter.onAttach(this)
         presenter.loadRepos(
             intent.getStringExtra("login").toString()

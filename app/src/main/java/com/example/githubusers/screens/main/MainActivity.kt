@@ -20,10 +20,11 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainView {
     private lateinit var adapter: MainRecyclerAdapter
 
     private val listUsers = mutableListOf<User>()
-    private var since = 1
+    private var NUM_OF_USERS = 30
 
     private companion object {
         private const val SCROLL_DIRECTION = 1
+        private const val since = 1
     }
 
     private val component by lazy {
@@ -57,8 +58,7 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainView {
                 if (!recyclerView.canScrollVertically(SCROLL_DIRECTION) &&
                     newState == RecyclerView.SCROLL_STATE_IDLE && adapter.hasLoading
                 ) {
-
-                    presenter.onNextPage(since + 30)
+                    presenter.onNextPage(since + NUM_OF_USERS)
                 }
             }
         })
