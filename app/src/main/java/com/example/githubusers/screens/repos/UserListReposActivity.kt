@@ -13,6 +13,10 @@ import javax.inject.Inject
 
 class UserListReposActivity : BaseActivity(R.layout.activity_user_list_repos), UserListReposView {
 
+    private companion object{
+        const val LOGIN_EXTRA = "login"
+    }
+
     private lateinit var linearLayoutManager: LinearLayoutManager
 
     private val component by lazy {
@@ -27,12 +31,14 @@ class UserListReposActivity : BaseActivity(R.layout.activity_user_list_repos), U
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
         component.inject(this)
+
         presenter.onAttach(this)
         presenter.loadRepos(
-            intent.getStringExtra("login").toString()
+            intent.getStringExtra(LOGIN_EXTRA).toString()
         )
     }
 

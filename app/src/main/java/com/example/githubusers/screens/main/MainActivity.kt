@@ -19,11 +19,8 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainView {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: MainRecyclerAdapter
 
-    private val listUsers = mutableListOf<User>()
-    private var since = 1
-
     private companion object {
-        private const val SCROLL_DIRECTION = 1
+        const val SCROLL_DIRECTION = 1
     }
 
     private val component by lazy {
@@ -46,27 +43,33 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainView {
         presenter.onAttach(this)
         presenter.loadUsers()
 
-        adapter = MainRecyclerAdapter(listUsers, ::onItemClick)
-        adapter.hasLoading = presenter.hasLoading
+        adapter = MainRecyclerAdapter(::onItemClick)
         recyclerView.adapter = adapter
 
         recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-
                 if (!recyclerView.canScrollVertically(SCROLL_DIRECTION) &&
-                    newState == RecyclerView.SCROLL_STATE_IDLE && adapter.hasLoading
+                    newState == RecyclerView.SCROLL_STATE_IDLE
                 ) {
-
-                    presenter.onNextPage(since + 30)
+                    adapter.setLoading(true)
+                    recyclerView.scrollToPosition(adapter.itemCount)
+                    presenter.onNextPage()
                 }
             }
         })
     }
 
+    override fun setListLoading(isLoading: Boolean) {
+        adapter.setLoading(isLoading)
+    }
+
     override fun onUsersLoaded(users: List<User>) {
-        listUsers.addAll(users)
-        adapter.notifyDataSetChanged()
+        adapter.setUsers(users)
+    }
+
+    override fun onAdditionalUsersLoaded(users: List<User>) {
+        adapter.addNewUsersSet(users)
     }
 
     private fun onItemClick(login: String) {

@@ -19,11 +19,7 @@ open class BaseActivity(@LayoutRes private val layout: Int) : AppCompatActivity(
     }
 
     override fun showLoading(isLoading: Boolean) {
-
-        when (isLoading) {
-            true -> progress_bar.visibility = View.VISIBLE
-            false -> progress_bar.visibility = View.GONE
-        }
+        val visibility = if (isLoading) View.VISIBLE else View.GONE
+        progress_bar.visibility = visibility
     }
-
 }

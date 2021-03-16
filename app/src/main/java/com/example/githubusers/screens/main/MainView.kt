@@ -7,4 +7,7 @@ interface MainView: BaseView {
 
     fun onUsersLoaded(users: List<User>)
 
+    fun onAdditionalUsersLoaded(users: List<User>)
+
+    fun setListLoading(isLoading: Boolean)
 }

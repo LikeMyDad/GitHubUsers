@@ -5,4 +5,5 @@ interface BaseView{
     fun showLoading(isLoading: Boolean)
 
     fun showError(throwable: Throwable)
+
 }

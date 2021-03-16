@@ -1,35 +1,42 @@
 package com.example.githubusers.screens.main
 
 import com.example.githubusers.base.BasePresenter
-import com.example.githubusers.data.UserRepository
+import com.example.githubusers.data.UserRepository.UserRepository
 import com.example.githubusers.network.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class UsersListPresenterImpl(private val repository: UserRepository) : BasePresenter<MainView>() {
 
-    private val dataUserList = mutableListOf<User>()
-    var hasLoading = true
+    private companion object {
+        const val NUM_USERS = 30
+        var id = 1
+    }
 
     fun loadUsers() {
         view?.showLoading(true)
-        compositeDisposable.add(repository.loadUsersList()
+        compositeDisposable.add(repository.loadUsersList(id) // load once and we get list users with since 1 to 30 ID's
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(::onUserLoadingSuccess, ::onUserLoadingError))
     }
 
-    fun onNextPage(since: Int) {
-        compositeDisposable.add(repository.sinceLoadUsersList(since)
+    fun onNextPage() {
+        id += NUM_USERS
+        compositeDisposable.add(repository.loadUsersList(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(::onUserLoadingNextPageSuccess, ::onUserLoadingNextPageError))
+            .subscribe(::onUserLoadingNextPageSuccess, ::onUserLoadingError))
     }
 
     private fun onUserLoadingSuccess(users: List<User>) {
         view?.showLoading(false)
-        dataUserList.addAll(users)
-        view?.onUsersLoaded(dataUserList)
+        view?.onUsersLoaded(users)
+    }
+
+    private fun onUserLoadingNextPageSuccess(users: List<User>) {
+        view?.onAdditionalUsersLoaded(users)
+        view?.setListLoading(false)
     }
 
     private fun onUserLoadingError(throwable: Throwable) {
@@ -37,15 +44,6 @@ class UsersListPresenterImpl(private val repository: UserRepository) : BasePrese
         view?.showError(throwable)
     }
 
-    private fun onUserLoadingNextPageSuccess(users: List<User>) {
-        hasLoading = users.size >= 30
-        dataUserList.addAll(users)
-        view?.onUsersLoaded(dataUserList)
-    }
-
-    private fun onUserLoadingNextPageError(throwable: Throwable) {
-        view?.showError(throwable)
-    }
 
 
 
