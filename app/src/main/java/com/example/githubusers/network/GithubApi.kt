@@ -14,5 +14,4 @@ interface GithubApi {
     @GET("/users/{user}/repos")
     fun reposList(@Path("user") login: String):
             Single<List<Repos>>
-
 }
