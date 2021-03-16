@@ -8,7 +8,6 @@ import com.example.githubusers.network.User
 import com.example.githubusers.screens.main.ui.BaseViewHolder
 import com.example.githubusers.screens.main.ui.LoadingViewHolder
 import com.example.githubusers.screens.main.ui.UserViewHolder
-import kotlin.properties.Delegates
 
 class MainRecyclerAdapter(
     private val onItemClick: (String) -> Unit
